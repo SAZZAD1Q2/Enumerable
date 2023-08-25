@@ -21,4 +21,13 @@ module MyEnumerable
     each.reduce { |min, item| min.nil? || item < min ? item : min }
   end
 
+def sort
+    sorted = to_a
+    if block_given?
+      sorted.sort { |a, b| yield a, b }
+    else
+      sorted.sort
+    end
+  end
+end
  
