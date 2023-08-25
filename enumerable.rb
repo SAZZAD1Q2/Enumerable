@@ -36,13 +36,4 @@ module MyEnumerable
     end
   end
 end
-def sort
-    sorted = to_a
-    if block_given?
-      sorted.sort { |a, b| yield a, b }
-    else
-      sorted.sort
-    end
-  end
-end
  
