@@ -1,24 +1,38 @@
 module MyEnumerable
-  def all?
-    each { |item| return false unless yield item }
+  def all?(&block)
+    each { |item| return false unless block.call(item) }
     true
   end
 
-  def any?
-    each { |item| return true if yield item }
+  def any?(&block)
+    each { |item| return true if block.call(item) }
     false
   end
 
-  def filter
-    map { |item| item if yield item }.compact
+  def filter(&block)
+    result = []
+    each { |item| result << item if block.call(item) }
+    result
   end
 
   def max
-    each.reduce { |max, item| max.nil? || item > max ? item : max }
+    max = nil
+    each { |item| max = item if max.nil? || item > max }
+    max
   end
 
   def min
-    each.reduce { |min, item| min.nil? || item < min ? item : min }
+    min = nil
+    each { |item| min = item if min.nil? || item < min }
+    min
   end
 
- 
+  def sort(&block)
+    sorted = to_a
+    if block_given?
+      sorted.sort(&block)
+    else
+      sorted.sort
+    end
+  end
+end
